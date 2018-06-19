@@ -4,7 +4,8 @@
   "description": "A dotenv file parser and serializer",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "build": "babel src -d lib",
     "build:watch": "babel src -d lib --watch"
   },
@@ -33,9 +34,11 @@
   "devDependencies": {
     "@foobarhq/eslint-config": "^5.0.0",
     "babel-cli": "^6.26.0",
+    "babel-jest": "^23.0.1",
     "babel-preset-env": "^1.7.0",
     "babel-preset-flow": "^6.23.0",
     "eslint": "^4.19.1",
-    "flow-bin": "^0.74.0"
+    "flow-bin": "^0.74.0",
+    "jest": "^23.1.0"
   }
 }
