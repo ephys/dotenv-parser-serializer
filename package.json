@@ -1,0 +1,27 @@
+{
+  "name": "dotenv-parser-serializer",
+  "version": "1.0.0",
+  "description": "A dotenv file parser and serializer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ephys/dotenv-parser-serializer.git"
+  },
+  "keywords": [
+    "dotenv",
+    "envfile",
+    "parse",
+    "serialize",
+    "env",
+    "config"
+  ],
+  "author": "Guylian Cox <guyliancox@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ephys/dotenv-parser-serializer/issues"
+  },
+  "homepage": "https://github.com/Ephys/dotenv-parser-serializer#readme"
+}
