@@ -43,7 +43,44 @@ const TOKENS = {
     ],
   },
   UnescapedQuotedStringChar: [/[^\\"]/],
-  EscapedChars: ['\\', /[ntbfr"\\]/],
+  EscapedChars: {
+    replacer(val) {
+      switch (val[0]) {
+        case '\\\\':
+          val[0] = '\\';
+          break;
+
+        case '\\n':
+          val[0] = '\n';
+          break;
+
+        case '\\t':
+          val[0] = '\t';
+          break;
+
+        case '\\b':
+          val[0] = '\b';
+          break;
+
+        case '\\f':
+          val[0] = '\f';
+          break;
+
+        case '\\r':
+          val[0] = '\r';
+          break;
+
+        case '\\"':
+          val[0] = '"';
+          break;
+
+        default:
+      }
+
+      return val;
+    },
+    token: ['\\', /[ntbfr"\\]/],
+  },
 };
 
 // top level tokens
@@ -108,6 +145,11 @@ function extract(token, state) {
   let currentIndex = state.index;
   const extractedValue = [];
 
+  const replacer = token.replacer || null;
+  if (token.token) {
+    token = token.token;
+  }
+
   for (const tokenPart of token) {
     if (typeof tokenPart === 'string') {
       const currentToken = source.substr(currentIndex, tokenPart.length);
@@ -168,7 +210,7 @@ function extract(token, state) {
 
   state.index = currentIndex;
 
-  const sanitizedExtractedValue = [];
+  let sanitizedExtractedValue = [];
   for (let i = 0; i < extractedValue.length; i++) {
     const val = extractedValue[i];
 
@@ -178,6 +220,10 @@ function extract(token, state) {
     } else {
       sanitizedExtractedValue.push(val);
     }
+  }
+
+  if (replacer) {
+    sanitizedExtractedValue = replacer(sanitizedExtractedValue);
   }
 
   return { value: sanitizedExtractedValue, token: getTokenName(token) };
@@ -235,12 +281,5 @@ function parseString(val) {
     str = val.value[1].value[0];
   }
 
-  return str
-    .replace(/\\"/g, '"')
-    .replace(/\\\\/g, '\\')
-    .replace(/\\n/g, '\n')
-    .replace(/\\t/g, '\t')
-    .replace(/\\b/g, '\b')
-    .replace(/\\f/g, '\f')
-    .replace(/\\r/g, '\r');
+  return str;
 }
