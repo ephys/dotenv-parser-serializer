@@ -196,7 +196,11 @@ export default function parse(source: string, { extractDescriptions = false } = 
     switch (entry.token) {
 
       case 'Comment':
-        lastDescription += entry.value[1].value;
+        if (lastDescription) {
+          lastDescription += '\n';
+        }
+
+        lastDescription += entry.value[1].value[0].trim();
         break;
 
       case 'keyedEntry': {
