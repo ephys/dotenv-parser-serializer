@@ -3,7 +3,7 @@
     ["env", {
       "modules": "commonjs",
       "targets": {
-        "node": "8.4.0"
+        "node": "10.4.0"
       }
     }],
     "flow"
