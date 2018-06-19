@@ -7,7 +7,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "build": "babel src -d lib",
-    "build:watch": "babel src -d lib --watch"
+    "build:watch": "babel src -d lib --watch",
+    "prepublishOnly": "npm run build && npm test"
   },
   "repository": {
     "type": "git",
