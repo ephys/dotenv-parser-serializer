@@ -41,7 +41,8 @@ describe('parse', () => {
     # This is my first value, very important
     MY_KEY=value
     
-    # another key
+    # this is a multiline
+    # comment
       KEY2=test
       
       THIRD=abc
@@ -52,7 +53,7 @@ describe('parse', () => {
       },
       KEY2: {
         value: 'test',
-        description: 'another key',
+        description: 'this is a multiline\ncomment',
       },
       THIRD: {
         value: 'abc',
