@@ -1,0 +1,11 @@
+{
+  "presets": [
+    ["env", {
+      "modules": "commonjs",
+      "targets": {
+        "node": "8.4.0"
+      }
+    }],
+    "flow"
+  ]
+}

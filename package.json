@@ -2,13 +2,19 @@
   "name": "dotenv-parser-serializer",
   "version": "1.0.0",
   "description": "A dotenv file parser and serializer",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d lib",
+    "build:watch": "babel src -d lib --watch"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Ephys/dotenv-parser-serializer.git"
+  },
+  "engines": {
+    "node": "^10.4.0",
+    "npm": "^6.1.0"
   },
   "keywords": [
     "dotenv",
@@ -23,5 +29,13 @@
   "bugs": {
     "url": "https://github.com/Ephys/dotenv-parser-serializer/issues"
   },
-  "homepage": "https://github.com/Ephys/dotenv-parser-serializer#readme"
+  "homepage": "https://github.com/Ephys/dotenv-parser-serializer#readme",
+  "devDependencies": {
+    "@foobarhq/eslint-config": "^5.0.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-flow": "^6.23.0",
+    "eslint": "^4.19.1",
+    "flow-bin": "^0.74.0"
+  }
 }

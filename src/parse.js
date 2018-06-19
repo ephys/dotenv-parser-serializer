@@ -65,7 +65,7 @@ function getTokenName(token) {
   return null;
 }
 
-function* lex(source) {
+function *lex(source) {
 
   const state = { source, index: 0 };
 
@@ -106,7 +106,7 @@ function extract(token, state) {
   const source = state.source;
 
   let currentIndex = state.index;
-  let extractedValue = [];
+  const extractedValue = [];
 
   for (const tokenPart of token) {
     if (typeof tokenPart === 'string') {
@@ -136,7 +136,7 @@ function extract(token, state) {
 
     if (typeof tokenPart === 'object' && tokenPart != null) {
 
-      let subToken = TOKENS[tokenPart.type];
+      const subToken = TOKENS[tokenPart.type];
 
       if (subToken == null) {
         throw new Error(`Could not extract token ${tokenPart.type}, unknown token!`);
@@ -183,7 +183,7 @@ function extract(token, state) {
   return { value: sanitizedExtractedValue, token: getTokenName(token) };
 }
 
-export default function parse(source: string): DotEnvObj {
+export default function parse(source: string, { extractDescriptions = false } = {}): DotEnvObj {
 
   const map = {};
 
@@ -194,18 +194,29 @@ export default function parse(source: string): DotEnvObj {
     }
 
     switch (entry.token) {
-      case 'Whitespace':
-        break;
 
       case 'Comment':
         lastDescription += entry.value[1].value;
         break;
 
-      case 'keyedEntry':
+      case 'keyedEntry': {
         const key = entry.value[0].value[0];
         const val = parseString(entry.value[2]);
 
-        map[key] = val;
+        if (extractDescriptions) {
+          map[key] = { description: lastDescription || null, value: val };
+        } else {
+          map[key] = val;
+        }
+
+        lastDescription = '';
+
+        break;
+      }
+
+      case 'Whitespace':
+      default:
+        break;
     }
   }
 
