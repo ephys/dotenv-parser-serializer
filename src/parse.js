@@ -14,7 +14,7 @@ const TOKENS = {
   // A commentChars is a CommentChar optionally followed by CommentChars
   CommentChars: [{ type: 'CommentChar', flatten: true }, { type: 'CommentChars', optional: true, flatten: true }],
   CommentChar: [/[^\n]/], // anything except line terminators,
-  keyedEntry: [{ type: 'Key' }, '=', { type: 'String' }],
+  keyedEntry: [{ type: 'Key' }, '=', { type: 'String', optional: true }],
 
   Key: [{ type: 'AlphaUChar', flatten: true }, { type: 'AlphaNumUChars', optional: true, flatten: true }],
   AlphaNumUChars: [{ type: 'AlphaNumUChar', flatten: true }, { type: 'AlphaNumUChars', optional: true, flatten: true }],
@@ -24,6 +24,7 @@ const TOKENS = {
   String: {
     $or: [
       'UnquotedString',
+      'EmptyString',
       'QuotedString',
     ],
   },
@@ -34,6 +35,8 @@ const TOKENS = {
   SafeChar: [/[^\n"]/],
   UnquotedStringChars: [/[^\\\n]/, { type: 'UnquotedStringChars', optional: true, flatten: true }],
 
+  // TODO: This type should not exist, but QuotedString[1].optional does not work. this is a hotfix.
+  EmptyString: ['""'],
   QuotedString: ['"', { type: 'QuotedStringChars', optional: true }, '"'],
   QuotedStringChars: [{ type: 'QuotedStringChar', flatten: true }, { type: 'QuotedStringChars', optional: true, flatten: true }],
   QuotedStringChar: {
@@ -251,7 +254,7 @@ export default function parse(source: string, { extractDescriptions = false } = 
 
       case 'keyedEntry': {
         const key = entry.value[0].value[0];
-        const val = parseString(entry.value[2]);
+        const val = entry.value[2] == null ? '' : parseString(entry.value[2]);
 
         if (extractDescriptions) {
           map[key] = { description: lastDescription || null, value: val };
@@ -278,6 +281,10 @@ function parseString(val) {
   if (val.token === 'UnquotedString') {
     str = val.value[0];
   } else {
+    if (val.value.length !== 3) {
+      return '';
+    }
+
     str = val.value[1].value[0];
   }
 

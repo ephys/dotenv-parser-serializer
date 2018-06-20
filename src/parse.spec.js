@@ -69,6 +69,17 @@ describe('parse', () => {
     });
   });
 
+  it('Supports empty values', () => {
+
+    expect(parse(`MY_KEY=`)).toEqual({
+      MY_KEY: '',
+    });
+
+    expect(parse(`MY_KEY=""`)).toEqual({
+      MY_KEY: '',
+    });
+  });
+
   it('Supports quotes inside unquoted strings', () => {
 
     expect(parse(`MY_KEY=this "quote"`)).toEqual({
