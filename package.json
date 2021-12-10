@@ -1,6 +1,6 @@
 {
   "name": "dotenv-parser-serializer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A dotenv file parser and serializer",
   "main": "lib/index.js",
   "scripts": {
@@ -15,8 +15,7 @@
     "url": "git+https://github.com/Ephys/dotenv-parser-serializer.git"
   },
   "engines": {
-    "node": "^10.4.0",
-    "npm": "^6.1.0"
+    "node": ">=10.4.0"
   },
   "keywords": [
     "dotenv",
