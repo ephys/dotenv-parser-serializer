@@ -26,13 +26,14 @@ const TOKENS = {
       'UnquotedString',
       'EmptyString',
       'QuotedString',
+      'SingleQuotedString'
     ],
   },
 
   UnquotedString: [{ type: 'SafeChar', flatten: true }, { type: 'UnquotedStringChars', optional: true, flatten: true }],
 
   // any char except newline and ", " is reserved for future quoted strings.
-  SafeChar: [/[^\n"]/],
+  SafeChar: [/[^\n"']/],
   UnquotedStringChars: [/[^\\\n]/, { type: 'UnquotedStringChars', optional: true, flatten: true }],
 
   // TODO: This type should not exist, but QuotedString[1].optional does not work. this is a hotfix.
@@ -45,7 +46,13 @@ const TOKENS = {
       'EscapedChars',
     ],
   },
+  SingleQuotedString: ["'", { type: 'SingleQuotedStringChars', optional: true }, "'"],
+  SingleQuotedStringChars: [{ type: 'SingleQuotedStringChar', flatten: true }, { type: 'SingleQuotedStringChars', optional: true, flatten: true }],
+  SingleQuotedStringChar: {
+    $or: ['UnescapedSingleQuotedStringChar']
+  },
   UnescapedQuotedStringChar: [/[^\\"]/],
+  UnescapedSingleQuotedStringChar: [/[^']/],
   EscapedChars: {
     replacer(val) {
       switch (val[0]) {

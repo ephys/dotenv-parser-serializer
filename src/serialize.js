@@ -17,10 +17,17 @@ export default function serialize(obj) {
       }
     }
 
-    serializedEntry += `${key}=${JSON.stringify(value)}`;
+    serializedEntry += `${key}=${serializeString(value)}`;
 
     serializedDoc.push(serializedEntry);
   }
 
-  return serializedDoc.join('\n\n');
+  return serializedDoc.join('\n');
+}
+
+function serializeString(val) {
+  if (val.includes('\n') && !val.includes("'")) {
+    return `'${val}'`;
+  }
+  return JSON.stringify(val)
 }
